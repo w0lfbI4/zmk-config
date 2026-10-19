@@ -19,7 +19,7 @@
     // Описание кастомного послойного поведения для энкодеров
     behaviors {
         // Управление для ЛЕВОГО энкодера
-        left_encoder: left_encoder_behavior {
+        left_enc: left_encoder_behavior {
             compatible = "zmk,behavior-sensor-rotate-var";
             #sensor-binding-cells = <0>;
             // Порядок слоев: BASE (Громкость), LOWER (Цвет RGB), RAISE (Скролл страниц)
@@ -27,7 +27,7 @@
         };
 
         // Управление для ПРАВОГО энкодера
-        right_encoder: right_encoder_behavior {
+        right_enc: right_encoder_behavior {
             compatible = "zmk,behavior-sensor-rotate-var";
             #sensor-binding-cells = <0>;
             // Порядок слоев: BASE (Курсор вправо/влево), LOWER (Яркость RGB), RAISE (Курсор вниз/вверх)
@@ -57,7 +57,7 @@
             >;
 
             // Подключаем наши кастомные послойные энкодеры
-            sensor-bindings = <&left_encoder &right_encoder>;
+            sensor-bindings = <&left_enc &right_enc>;
         };
 
         lower_layer {
