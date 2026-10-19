@@ -16,6 +16,25 @@
 #define ADJUST 3
 
 / {
+    // Описание кастомного послойного поведения для энкодеров
+    behaviors {
+        // Управление для ЛЕВОГО энкодера
+        left_encoder: left_encoder_behavior {
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <0>;
+            // Порядок слоев: BASE (Громкость), LOWER (Цвет RGB), RAISE (Скролл страниц)
+            bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>, <&inc_dec_kp RGB_HUI RGB_HUD>, <&inc_dec_kp PG_UP PG_DN>;
+        };
+
+        // Управление для ПРАВОГО энкодера
+        right_encoder: right_encoder_behavior {
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <0>;
+            // Порядок слоев: BASE (Курсор вправо/влево), LOWER (Яркость RGB), RAISE (Курсор вниз/вверх)
+            bindings = <&inc_dec_kp RIGHT LEFT>, <&inc_dec_kp RGB_BRI RGB_BRD>, <&inc_dec_kp DOWN UP>;
+        };
+    };
+
     conditional_layers {
         compatible = "zmk,conditional-layers";
         adjust_layer {
@@ -24,7 +43,6 @@
         };
     };
 
-    // Основная матрица клавиш (Здесь sensor-bindings БОЛЬШЕ НЕТ, чтобы не было ошибок)
     keymap {
         compatible = "zmk,keymap";
 
@@ -37,6 +55,9 @@
 &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B      &kp C_MUTE &none      &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
                  &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp RET    &kp SPACE  &mo RAISE &kp RCTRL &kp RALT  &kp RGUI
             >;
+
+            // Подключаем наши кастомные послойные энкодеры
+            sensor-bindings = <&left_encoder &right_encoder>;
         };
 
         lower_layer {
@@ -48,6 +69,7 @@
 &trans    &kp KP_PLUS &kp MINUS &kp UNDER &kp LBRC  &kp RBRC   &trans &trans  &kp LBKT  &kp RBKT &kp FSLH  &kp LS(FSLH) &kp BSLH  &trans
                     &trans    &trans      &trans    &trans     &trans &trans  &trans    &trans   &trans    &trans
             >;
+
         };
 
         raise_layer {
@@ -59,6 +81,8 @@
 &trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &trans        &trans  &trans  &trans    &trans    &trans   &trans    &trans  &trans
                         &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
             >;
+
+
         };
 
         adjust_layer {
@@ -70,27 +94,7 @@
 &none             &none           &none           &none           &none           &none            &rgb_ug RGB_TOG &none  &none &none &none &none &none &none
                                   &none           &none           &none           &none            &none           &none  &none &none &none &none
             >;
-        };
-    };
 
-    // Выделенная аппаратная карта энкодеров для послойного переключения
-    encodermap {
-        compatible = "zmk,encodermap";
-        
-        default_layer {
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-        };
-
-        lower_layer {
-            sensor-bindings = <&inc_dec_kp RGB_HUI RGB_HUD &inc_dec_kp RGB_BRI RGB_BRD>;
-        };
-
-        raise_layer {
-            sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
-        };
-        
-        adjust_layer {
-            sensor-bindings = <&trans &trans>;
         };
     };
 };
