@@ -24,6 +24,7 @@
         };
     };
 
+    // Основная матрица клавиш (Здесь sensor-bindings БОЛЬШЕ НЕТ, чтобы не было ошибок)
     keymap {
         compatible = "zmk,keymap";
 
@@ -36,8 +37,6 @@
 &kp LSHFT &kp Z  &kp X    &kp C    &kp V     &kp B      &kp C_MUTE &none      &kp N  &kp M     &kp COMMA &kp DOT  &kp FSLH &kp RSHFT
                  &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp RET    &kp SPACE  &mo RAISE &kp RCTRL &kp RALT  &kp RGUI
             >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
         };
 
         lower_layer {
@@ -49,8 +48,6 @@
 &trans    &kp KP_PLUS &kp MINUS &kp UNDER &kp LBRC  &kp RBRC   &trans &trans  &kp LBKT  &kp RBKT &kp FSLH  &kp LS(FSLH) &kp BSLH  &trans
                     &trans    &trans      &trans    &trans     &trans &trans  &trans    &trans   &trans    &trans
             >;
-
-            sensor-bindings = <&inc_dec_kp RGB_HUI RGB_HUD &inc_dec_kp RGB_BRI RGB_BRD>;
         };
 
         raise_layer {
@@ -62,8 +59,6 @@
 &trans     &kp K_UNDO   &kp K_CUT    &kp K_COPY   &kp K_PASTE  &trans        &trans  &trans  &trans    &trans    &trans   &trans    &trans  &trans
                         &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
             >;
-
-            sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
         };
 
         adjust_layer {
@@ -75,6 +70,27 @@
 &none             &none           &none           &none           &none           &none            &rgb_ug RGB_TOG &none  &none &none &none &none &none &none
                                   &none           &none           &none           &none            &none           &none  &none &none &none &none
             >;
+        };
+    };
+
+    // Выделенная аппаратная карта энкодеров для послойного переключения
+    encodermap {
+        compatible = "zmk,encodermap";
+        
+        default_layer {
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+        };
+
+        lower_layer {
+            sensor-bindings = <&inc_dec_kp RGB_HUI RGB_HUD &inc_dec_kp RGB_BRI RGB_BRD>;
+        };
+
+        raise_layer {
+            sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
+        };
+        
+        adjust_layer {
+            sensor-bindings = <&trans &trans>;
         };
     };
 };
