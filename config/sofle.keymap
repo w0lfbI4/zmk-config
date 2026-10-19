@@ -16,23 +16,6 @@
 #define ADJUST 3
 
 / {
-    // Переопределяем встроенные системные поведения энкодеров Sofle v1
-    behaviors {
-        left_encoder: left_encoder {
-            compatible = "zmk,behavior-sensor-rotate-var";
-            #sensor-binding-cells = <0>;
-            // Массив пар: [Слой 0 (BASE)], [Слой 1 (LOWER)], [Слой 2 (RAISE)]
-            bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>, <&inc_dec_kp RGB_HUI RGB_HUD>, <&inc_dec_kp PG_UP PG_DN>;
-        };
-
-        right_encoder: right_encoder {
-            compatible = "zmk,behavior-sensor-rotate-var";
-            #sensor-binding-cells = <0>;
-            // Массив пар: [Слой 0 (BASE)], [Слой 1 (LOWER)], [Слой 2 (RAISE)]
-            bindings = <&inc_dec_kp RIGHT LEFT>, <&inc_dec_kp RGB_BRI RGB_BRD>, <&inc_dec_kp DOWN UP>;
-        };
-    };
-
     conditional_layers {
         compatible = "zmk,conditional-layers";
         adjust_layer {
@@ -54,8 +37,12 @@
                  &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp RET    &kp SPACE  &mo RAISE &kp RCTRL &kp RALT  &kp RGUI
             >;
 
-            // Подключаем переопределенные энкодеры строго ОДИН РАЗ на первом слое
-            sensor-bindings = <&left_encoder &right_encoder>;
+            // Переопределяем встроенные энкодеры напрямую через zmk,behavior-sensor-rotate-var
+            // Массив bindings строго следует порядку слоев: [0] BASE, [1] LOWER, [2] RAISE
+            sensor-bindings = <
+                &sensor_rotate_var &inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp RGB_HUI RGB_HUD &inc_dec_kp PG_UP PG_DN
+                &sensor_rotate_var &inc_dec_kp RIGHT LEFT        &inc_dec_kp RGB_BRI RGB_BRD &inc_dec_kp DOWN UP
+            >;
         };
 
         lower_layer {
