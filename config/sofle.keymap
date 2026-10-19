@@ -64,10 +64,6 @@
 &trans     &kp KP_PLUS  &kp MINUS  &kp UNDER  &kp LBRC  &kp RBRC   &trans    &trans  &kp LBKT   &kp RBKT  &kp FSLH   &kp LS(FSLH)  &kp BSLH    &trans
                         &trans     &trans     &trans    &trans     &trans    &trans  &trans     &trans    &trans     &trans
             >;
-
-            sensor-bindings =
-                <&left_enc RGB_HUI RGB_HUD>,
-                <&left_enc RGB_BRI RGB_BRD>;
         };
 
         raise_layer {
