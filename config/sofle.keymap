@@ -50,8 +50,7 @@
                     &trans    &trans      &trans    &trans     &trans &trans  &trans    &trans   &trans    &trans
             >;
 
-            // На слое LOWER: левый энкодер двигает курсор влево/вправо, правый — вверх/вниз
-            sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
+            sensor-bindings = <&inc_dec_kp RGB_HUI RGB_HUD &inc_dec_kp RGB_BRI RGB_BRD>;
         };
 
         raise_layer {
@@ -64,7 +63,7 @@
                         &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
             >;
 
-            sensor-bindings = <&inc_dec_kp RGB_HUI RGB_HUD &inc_dec_kp RGB_BRI RGB_BRD>;
+            sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
         };
 
         adjust_layer {
