@@ -9,6 +9,8 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/ext_power.h>
+// Подключаем библиотеку мыши для работы нативного скролла
+#include <dt-bindings/zmk/mouse.h>
 
 #define BASE 0
 #define LOWER 1
@@ -16,6 +18,17 @@
 #define ADJUST 3
 
 / {
+    // Кастомные настройки для плавной прокрутки
+    behaviors {
+        // Левый энкодер: нативный скролл мыши с задержкой под стандартные 3 строчки
+        left_encoder_scroll: left_encoder_scroll {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_UP>, <&msc SCRL_DOWN>;
+            tap-ms = <30>; // Оптимальный интервал для классического шага мыши
+        };
+    };
+
     conditional_layers {
         compatible = "zmk,conditional-layers";
         adjust_layer {
@@ -37,8 +50,9 @@
                  &kp LGUI &kp LALT &kp LCTRL &mo LOWER  &kp SPACE    &kp RET  &mo RAISE &kp RCTRL &kp RALT  &kp RGUI
             >;
 
-            // На основном слое (DEFAULT) стандартная схема: Звук и Скролл страниц
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+            // Заменили резкий PG_UP/PG_DN на плавное поведение left_encoder_scroll.
+            // Правый энкодер по-прежнему управляет громкостью (хоть правая половина пока и отключена)
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &left_encoder_scroll>;
         };
 
         lower_layer {
@@ -62,7 +76,6 @@
                         &trans       &trans       &trans       &trans        &trans  &trans  &trans    &trans    &trans   &trans
             >;
 
-            // На слое RAISE: ваши настроенные стрелочки на крутилках! Работают нативно.
             sensor-bindings = <&inc_dec_kp RIGHT LEFT &inc_dec_kp DOWN UP>;
         };
 
