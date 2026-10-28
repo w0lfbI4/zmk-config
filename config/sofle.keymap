@@ -21,12 +21,12 @@
     // Кастомные настройки для плавной прокрутки
 
     behaviors {
-            smooth_scroll: smooth_scroll {
-        compatible = "zmk,behavior-sensor-rotate";
-        #sensor-binding-cells = <0>;
-        bindings = <&msc SCRL_UP>, <&msc SCRL_DOWN>;
-        tap-ms = <250>; // Фиксирует четкий шаг колесика по 3 строки, убирая инерцию
-    };// Левый энкодер: нативный скролл мыши с задержкой под стандартные 3 строчки
+        smooth_scroll: smooth_scroll {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_UP &msc SCRL_DOWN>; // Убрали запятую между командами
+            tap-ms = <250>;
+        };
     };
 
     conditional_layers {
