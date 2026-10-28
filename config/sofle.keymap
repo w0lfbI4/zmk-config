@@ -17,6 +17,16 @@
 #define ADJUST 3
 
 / {
+    // Добавляем кастомное поведение вращения, увеличивающее длину сигнала скролла
+    behaviors {
+        enc_scroll: enc_scroll {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&kp SCRL_UP>, <&kp SCRL_DOWN>;
+            tap-ms = <40>; // Увеличиваем длительность сигнала, чтобы ОС распознала прокрутку
+        };
+    };
+
     conditional_layers {
         compatible = "zmk,conditional-layers";
 
@@ -35,13 +45,12 @@
 &kp ESC    &kp N1  &kp N2    &kp N3    &kp N4     &kp N5                              &kp N6     &kp N7     &kp N8     &kp N9    &kp N0    &kp MINUS
 &kp GRAVE  &kp Q   &kp W     &kp E     &kp R      &kp T                               &kp Y      &kp U      &kp I      &kp O     &kp P     &kp BSPC
 &kp TAB    &kp A   &kp S     &kp D     &kp F      &kp G                               &kp H      &kp J      &kp K     &kp L     &kp SEMI  &kp SQT
-&kp LSHFT  &kp Z   &kp X     &kp C     &kp V      &kp B      &kp C_MUTE    &kp EQUAL  &kp N      &kp M      &kp COMMA  &kp DOT   &kp FSLH  &kp EQUAL
+&kp LSHFT  &kp Z   &kp X     &kp C     &kp V     &kp B      &kp C_MUTE    &kp EQUAL  &kp N      &kp M      &kp COMMA  &kp DOT   &kp FSLH  &kp EQUAL
                    &kp LGUI  &kp LALT  &kp LCTRL  &mo LOWER  &kp SPACE     &kp RET    &mo RAISE  &kp RCTRL  &kp RALT  &kp RGUI
             >;
 
-            // ИСПРАВЛЕНО ДЛЯ ZMK v0.3:
-            // Заменили падающий на компиляции &inc_dec_msc на стабильный &inc_dec_kp с кодами скролла
-            sensor-bindings = <&inc_dec_kp SCRL_UP SCRL_DOWN &inc_dec_kp C_VOL_UP C_VOL_DN>;
+            // Подключаем наше новое поведение enc_scroll к левому энкодеру
+            sensor-bindings = <&enc_scroll &inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
 
         lower_layer {
@@ -59,7 +68,7 @@
             display-name = "raise";
             bindings = <
 &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                    &trans     &kp KP_NUM  &kp SLASH     &kp ASTERISK  &trans   &trans
-&trans      &kp INS       &kp UP        &kp K_CMENU   &trans        &trans                          &kp PG_UP  &kp N7      &kp N8        &kp N9        &kp N0   &trans
+&trans      &kp INS       &kp UP        &kp K_CMENU   &trans        &trans                          &kp PG_UP  &kp N7      &kp NUMBER_8  &kp N9        &kp N0   &trans
 &trans      &kp LEFT      &kp DOWN      &kp RIGHT     &trans        &kp CLCK                        &kp PG_DN  &kp N4      &kp N5        &kp N6        &kp DEL  &kp BSPC
 &trans      &kp K_UNDO    &kp K_CUT     &kp K_COPY    &kp K_PASTE   &trans        &trans    &trans  &trans     &kp N1      &kp N2        &kp N3        &trans   &trans
                           &trans        &trans        &trans        &trans        &trans    &trans  &trans     &trans      &kp N0        &trans
