@@ -20,14 +20,7 @@
 / {
     // Кастомные настройки для плавной прокрутки
 
-    behaviors {
-        smooth_scroll: smooth_scroll {
-            compatible = "zmk,behavior-sensor-rotate";
-            #sensor-binding-cells = <0>;
-            bindings = <&msc SCRL_UP &msc SCRL_DOWN>; // Убрали запятую между командами
-            tap-ms = <250>;
-        };
-    };
+
 
     conditional_layers {
         compatible = "zmk,conditional-layers";
@@ -54,8 +47,8 @@
             // Заменили резкий PG_UP/PG_DN на плавное поведение left_encoder_scroll.
             // Правый энкодер по-прежнему управляет громкостью (хоть правая половина пока и отключена)
 
-            sensor-bindings =
-                <&inc_dec_kp C_VOL_UP C_VOL_DN>, &smooth_scroll>;
+sensor-bindings = <&inc_dec_msc SCRL_UP SCRL_DOWN &inc_dec_kp C_VOL_UP C_VOL_DN>;
+
                 
         };
 
